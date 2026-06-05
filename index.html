@@ -512,12 +512,12 @@
     </div>
 
     <nav class="nav">
-        <button class="active" onclick="showSection('overview')">📊 Overview</button>
-        <button onclick="showSection('projects')" class="">📁 Projects</button>
-        <button onclick="showSection('log-run')">▶️ Log Run</button>
-        <button onclick="showSection('history')">📋 Run History</button>
-        <button onclick="showSection('portfolio')">🏆 Portfolio</button>
-        <button onclick="showSection('settings')" class="">⚙️ Settings</button>
+        <button class="active" onclick="showSection('overview', this)">📊 Overview</button>
+        <button onclick="showSection('projects', this)">📁 Projects</button>
+        <button onclick="showSection('log-run', this)" class="">▶️ Log Run</button>
+        <button onclick="showSection('history', this)">📋 Run History</button>
+        <button onclick="showSection('portfolio', this)">🏆 Portfolio</button>
+        <button onclick="showSection('settings', this)" class="">⚙️ Settings</button>
     </nav>
 
     <div class="container">
@@ -1776,11 +1776,11 @@
         }
 
         // ===== NAVIGATION =====
-        function showSection(id) {
+        function showSection(id, btn) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            event.target.classList.add('active');
+            if (btn) btn.classList.add('active');
             refreshAll();
         }
 
