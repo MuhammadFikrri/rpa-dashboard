@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RPA Portfolio Dashboard</title>
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -503,26 +505,24 @@
         .profile-info p {
             color: var(--text-muted);
         }
+    
     </style>
 </head>
 <body>
-    <div class="header">
+<div class="header">
         <h1>🤖 RPA Portfolio Dashboard</h1>
         <p>Track, monitor, and showcase your automation projects</p>
     </div>
-
-    <nav class="nav">
-        <button class="active" onclick="showSection('overview', this)">📊 Overview</button>
-        <button onclick="showSection('projects', this)">📁 Projects</button>
-        <button onclick="showSection('log-run', this)" class="">▶️ Log Run</button>
+<nav class="nav">
+        <button class="" class="active" onclick="showSection('overview', this)">📊 Overview</button>
+        <button onclick="showSection('projects', this)" class="">📁 Projects</button>
+        <button onclick="showSection('log-run', this)">▶️ Log Run</button>
         <button onclick="showSection('history', this)">📋 Run History</button>
         <button onclick="showSection('portfolio', this)">🏆 Portfolio</button>
-        <button onclick="showSection('settings', this)" class="">⚙️ Settings</button>
+        <button onclick="showSection('settings', this)" class="active">⚙️ Settings</button>
     </nav>
-
-    <div class="container">
-        <!-- OVERVIEW SECTION -->
-        <div id="overview" class="section active">
+<div class="container">
+<div id="overview" class="section active">
             <div class="stats-grid" id="stats-grid">
                 <div class="stat-card">
                     <div class="stat-value">11</div>
@@ -693,9 +693,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- PROJECTS SECTION -->
-        <div id="projects" class="section">
+<div id="projects" class="section">
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
                     <h2>📁 My RPA Projects</h2>
@@ -869,9 +867,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- LOG RUN SECTION -->
-        <div id="log-run" class="section">
+<div id="log-run" class="section">
             <div class="card">
                 <h2>▶️ Log a Run</h2>
                 <form id="log-run-form" onsubmit="logRun(event)">
@@ -951,9 +947,7 @@
                 </form>
             </div>
         </div>
-
-        <!-- HISTORY SECTION -->
-        <div id="history" class="section">
+<div id="history" class="section">
             <div class="card">
                 <h2>📋 Run History</h2>
                 <div class="filter-bar">
@@ -1533,9 +1527,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- PORTFOLIO SECTION -->
-        <div id="portfolio" class="section">
+<div id="portfolio" class="section">
             <div class="card">
                 <div class="profile-header">
                     <div class="profile-avatar" id="profile-avatar">R</div>
@@ -1672,9 +1664,7 @@
                 <button class="btn btn-primary" onclick="exportPortfolioPDF()">📄 Print / Save as PDF</button>
             </div>
         </div>
-
-        <!-- SETTINGS SECTION -->
-        <div id="settings" class="section">
+<div id="settings" class="section">
             <div class="card">
                 <h2>👤 Profile Settings</h2>
                 <form onsubmit="saveProfile(event)">
@@ -1717,10 +1707,8 @@
                 <button class="btn btn-success" onclick="exportForPublishing()">🚀 Export for Publishing</button>
             </div>
         </div>
-    </div>
-
-    <!-- Add Project Modal -->
-    <div class="modal-overlay" id="project-modal">
+</div>
+<div class="modal-overlay" id="project-modal">
         <div class="modal">
             <h2 id="modal-title">Add New Project</h2>
             <form id="project-form" onsubmit="saveProject(event)">
@@ -1764,8 +1752,8 @@
             </form>
         </div>
     </div>
-
     <script>
+
         // ===== DATA LAYER =====
         function getData() {
             return JSON.parse(localStorage.getItem('rpa_dashboard') || '{"projects":[],"runs":[],"profile":{}}');
@@ -2324,16 +2312,54 @@
             var data = getData();
             var dataStr = JSON.stringify(data);
 
-            // Temporarily reset nav to Overview for clean export
-            document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
-            document.querySelectorAll('.nav button').forEach(function(b) { b.classList.remove('active'); });
-            document.getElementById('overview').classList.add('active');
-            document.querySelector('.nav button').classList.add('active');
+            // Instead of using outerHTML (which captures broken DOM state),
+            // we build the published file by reading source via a hidden iframe
+            var iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = window.location.href;
+            document.body.appendChild(iframe);
 
-            // Read the current page's full HTML source from DOM
-            var source = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+            iframe.onload = function() {
+                // Get the clean source before any JS runs
+                // This won't work on file:// either, so fallback to template approach
+                document.body.removeChild(iframe);
+                exportWithTemplate(dataStr);
+            };
 
-            // Find markers
+            iframe.onerror = function() {
+                document.body.removeChild(iframe);
+                exportWithTemplate(dataStr);
+            };
+
+            // Directly use template approach (most reliable)
+            exportWithTemplate(dataStr);
+            if (iframe.parentNode) document.body.removeChild(iframe);
+        }
+
+        function exportWithTemplate(dataStr) {
+            // Get the raw source of this file using document.querySelector on script/style
+            // Since outerHTML is unreliable, we reconstruct from the original static parts
+
+            // Get all style content
+            var styleEl = document.querySelector('style');
+            var cssContent = styleEl ? styleEl.textContent : '';
+
+            // Get script content from the original source (everything in the script tag)
+            var scripts = document.querySelectorAll('script');
+            var scriptContent = '';
+            for (var i = 0; i < scripts.length; i++) {
+                if (scripts[i].textContent.indexOf('getData') !== -1) {
+                    scriptContent = scripts[i].textContent;
+                    break;
+                }
+            }
+
+            if (!scriptContent) {
+                alert('Error: Could not extract script content.');
+                return;
+            }
+
+            // Replace the seed/generate functions in script
             var startMarker = '// ===== SEED DATA (PUBLISHED) =====
         function seedInitialData() {
             var existing = localStorage.getItem("rpa_dashboard");
@@ -2348,11 +2374,11 @@
         }
 
         // ===== INIT =====';
-            var startIdx = source.indexOf(startMarker);
-            var endIdx = source.indexOf(endMarker);
+            var startIdx = scriptContent.indexOf(startMarker);
+            var endIdx = scriptContent.indexOf(endMarker);
 
             if (startIdx === -1 || endIdx === -1) {
-                alert('Error: Could not find seed markers. Use Export Data (JSON) instead.');
+                alert('Error: Could not find seed markers in script.');
                 return;
             }
 
@@ -2368,7 +2394,38 @@
                 '            // Published version: no auto-generation\n' +
                 '        }\n\n        ';
 
-            var output = source.substring(0, startIdx) + replacement + source.substring(endIdx);
+            var newScript = scriptContent.substring(0, startIdx) + replacement + scriptContent.substring(endIdx);
+
+            // Get the static HTML body (before JS renders anything)
+            // We need the original HTML structure, so we grab it from a clean copy
+            var bodyHTML = document.querySelector('.header').outerHTML + '\n' +
+                document.querySelector('.nav').outerHTML + '\n' +
+                '<div class="container">\n' +
+                document.getElementById('overview').outerHTML + '\n' +
+                document.getElementById('projects').outerHTML + '\n' +
+                document.getElementById('log-run').outerHTML + '\n' +
+                document.getElementById('history').outerHTML + '\n' +
+                document.getElementById('portfolio').outerHTML + '\n' +
+                document.getElementById('settings').outerHTML + '\n' +
+                '</div>\n' +
+                document.getElementById('project-modal').outerHTML;
+
+            // Reset active states in the body HTML
+            bodyHTML = bodyHTML.replace(/class="section active"/g, 'class="section"');
+            bodyHTML = bodyHTML.replace('id="overview" class="section"', 'id="overview" class="section active"');
+            // Fix nav buttons - remove all active, add to first
+            bodyHTML = bodyHTML.replace(/class="active"(.*?)onclick="showSection/g, 'onclick="showSection');
+            bodyHTML = bodyHTML.replace('onclick="showSection(\'overview\', this)"', 'class="active" onclick="showSection(\'overview\', this)"');
+
+            var output = '<!DOCTYPE html>\n<html lang="en">\n<head>\n' +
+                '    <meta charset="UTF-8">\n' +
+                '    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+                '    <title>RPA Portfolio Dashboard</title>\n' +
+                '    <style>\n' + cssContent + '\n    </style>\n' +
+                '</head>\n<body>\n' +
+                bodyHTML + '\n' +
+                '    <scr' + 'ipt>\n' + newScript + '\n    </scr' + 'ipt>\n' +
+                '</body>\n</html>';
 
             var blob = new Blob([output], { type: 'text/html' });
             var url = URL.createObjectURL(blob);
@@ -2585,7 +2642,7 @@
         document.getElementById('project-modal').addEventListener('click', function(e) {
             if (e.target === this) closeProjectModal();
         });
+    
     </script>
-
-
-</body></html>
+</body>
+</html>
