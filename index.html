@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPA Portfolio Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .nav button {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            background: var(--bg);
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .nav button.active, .nav button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .stat-card.success .stat-value { color: var(--success); }
+        .stat-card.danger .stat-value { color: var(--danger); }
+        .stat-card.warning .stat-value { color: var(--warning); }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        /* Table */
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr:hover {
+            background: var(--bg);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-primary {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Chart area */
+        .chart-container {
+            position: relative;
+            height: 250px;
+            margin: 1rem 0;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 200px;
+            padding: 0 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            flex: 1;
+            max-width: 60px;
+        }
+
+        .bar {
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.3s ease;
+            min-height: 2px;
+        }
+
+        .bar.success { background: var(--success); }
+        .bar.fail { background: var(--danger); }
+
+        .bar-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        /* Project Cards */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .project-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .project-card h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .project-card .meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .project-card .stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .project-card .stats span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Filter bar */
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-bar select, .filter-bar input {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Success Rate Ring */
+        .ring-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .ring {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .ring-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.5rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .container { padding: 1rem; }
+        }
+
+        /* Tooltip */
+        .actions-cell {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Profile Section */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: 700;
+        }
+
+        .profile-info h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-info p {
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 RPA Portfolio Dashboard</h1>
+        <p>Track, monitor, and showcase your automation projects</p>
+    </div>
+
+    <nav class="nav">
+        <button class="active" onclick="showSection('overview')">📊 Overview</button>
+        <button onclick="showSection('projects')">📁 Projects</button>
+        <button onclick="showSection('log-run')">▶️ Log Run</button>
+        <button onclick="showSection('history')">📋 Run History</button>
+        <button onclick="showSection('portfolio')">🏆 Portfolio</button>
+        <button onclick="showSection('settings')">⚙️ Settings</button>
+    </nav>
+
+    <div class="container">
+        <!-- OVERVIEW SECTION -->
+        <div id="overview" class="section active">
+            <div class="stats-grid" id="stats-grid"></div>
+
+            <div class="card" style="margin-bottom:1.5rem;">
+                <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+                    <label style="font-weight:500; font-size:0.9rem; color:var(--text-muted);">📅 Filter by Date:</label>
+                    <input type="date" id="overview-date-from" onchange="refreshAll()" style="padding:0.5rem 0.8rem; border:1px solid var(--border); border-radius:8px; font-size:0.9rem;">
+                    <span style="color:var(--text-muted);">to</span>
+                    <input type="date" id="overview-date-to" onchange="refreshAll()" style="padding:0.5rem 0.8rem; border:1px solid var(--border); border-radius:8px; font-size:0.9rem;">
+                    <button class="btn btn-outline btn-sm" onclick="setOverviewFilter('today')">Today</button>
+                    <button class="btn btn-outline btn-sm" onclick="setOverviewFilter('week')">This Week</button>
+                    <button class="btn btn-outline btn-sm" onclick="setOverviewFilter('month')">This Month</button>
+                    <button class="btn btn-outline btn-sm" onclick="setOverviewFilter('all')">All Time</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2.5rem; flex-wrap:wrap; gap:0.5rem;">
+                    <h2 style="margin:0;">📈 Runs This Week</h2>
+                    <select id="chart-period" onchange="renderWeeklyChart()" style="padding:0.5rem 0.8rem; border:1px solid var(--border); border-radius:8px; font-size:0.9rem;">
+                        <option value="day">By Day (7 days)</option>
+                        <option value="week">By Week (4 weeks)</option>
+                        <option value="month">By Month (6 months)</option>
+                        <option value="year">By Year</option>
+                    </select>
+                </div>
+                <div class="chart-container">
+                    <div class="bar-chart" id="weekly-chart"></div>
+                </div>
+                <div style="display:flex; gap:1rem; justify-content:center; font-size:0.85rem; margin-top:0.5rem;">
+                    <button id="chart-filter-all" class="btn btn-sm" style="background:var(--primary);color:white;" onclick="setChartStatusFilter('all')">All</button>
+                    <button id="chart-filter-success" class="btn btn-sm btn-outline" onclick="setChartStatusFilter('success')"><span style="display:inline-block;width:12px;height:12px;background:var(--success);border-radius:2px;margin-right:4px;"></span>Success</button>
+                    <button id="chart-filter-failed" class="btn btn-sm btn-outline" onclick="setChartStatusFilter('failed')"><span style="display:inline-block;width:12px;height:12px;background:var(--danger);border-radius:2px;margin-right:4px;"></span>Failed</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🏅 Top Projects by Runs</h2>
+                <div class="table-wrap">
+                    <table id="top-projects-table">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Total Runs</th>
+                                <th>Success</th>
+                                <th>Failed</th>
+                                <th>Success Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROJECTS SECTION -->
+        <div id="projects" class="section">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+                    <h2>📁 My RPA Projects</h2>
+                    <button class="btn btn-primary" onclick="openProjectModal()">+ Add Project</button>
+                </div>
+                <div class="project-grid" id="project-grid"></div>
+            </div>
+        </div>
+
+        <!-- LOG RUN SECTION -->
+        <div id="log-run" class="section">
+            <div class="card">
+                <h2>▶️ Log a Run</h2>
+                <form id="log-run-form" onsubmit="logRun(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Project</label>
+                            <select id="run-project" required>
+                                <option value="">Select project...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="run-status" required>
+                                <option value="success">✅ Success</option>
+                                <option value="failed">❌ Failed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="run-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Time</label>
+                            <input type="time" id="run-time" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes (optional)</label>
+                        <textarea id="run-notes" rows="3" placeholder="Any details about this run..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Log Run</button>
+                </form>
+            </div>
+
+            <!-- Quick log multiple runs -->
+            <div class="card">
+                <h2>⚡ Quick Bulk Log</h2>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">Quickly log multiple successful runs for a project in a date range.</p>
+                <form id="bulk-log-form" onsubmit="bulkLog(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Project</label>
+                            <select id="bulk-project" required>
+                                <option value="">Select project...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Runs per Day</label>
+                            <input type="number" id="bulk-count" min="1" value="1" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>From Date</label>
+                            <input type="date" id="bulk-from" required>
+                        </div>
+                        <div class="form-group">
+                            <label>To Date</label>
+                            <input type="date" id="bulk-to" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="bulk-status" required>
+                                <option value="success">✅ All Success</option>
+                                <option value="failed">❌ All Failed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Skip Weekends?</label>
+                            <select id="bulk-skip-weekends">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Bulk Log</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- HISTORY SECTION -->
+        <div id="history" class="section">
+            <div class="card">
+                <h2>📋 Run History</h2>
+                <div class="filter-bar">
+                    <select id="filter-project" onchange="renderHistory()">
+                        <option value="">All Projects</option>
+                    </select>
+                    <select id="filter-status" onchange="renderHistory()">
+                        <option value="">All Status</option>
+                        <option value="success">Success</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                    <select id="filter-period" onchange="renderHistory()">
+                        <option value="">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                </div>
+                <div class="table-wrap">
+                    <table id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Project</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div id="history-empty" class="empty-state" style="display:none;">
+                    <p>No runs logged yet. Go to "Log Run" to add your first entry.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PORTFOLIO SECTION -->
+        <div id="portfolio" class="section">
+            <div class="card">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profile-avatar">R</div>
+                    <div class="profile-info">
+                        <h2 id="profile-name">RPA Developer</h2>
+                        <p id="profile-title">Robotic Process Automation Specialist</p>
+                    </div>
+                </div>
+                <p id="profile-summary" style="color:var(--text-muted); line-height:1.6;">
+                    Experienced RPA Developer specializing in process automation. Track record of delivering reliable automated solutions.
+                </p>
+            </div>
+
+            <div class="stats-grid" id="portfolio-stats"></div>
+
+            <div class="card">
+                <h2>📂 Project Portfolio</h2>
+                <div class="table-wrap">
+                    <table id="portfolio-table">
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Technology</th>
+                                <th>Total Runs</th>
+                                <th>Success Rate</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:1rem;">
+                <button class="btn btn-primary" onclick="exportPortfolioPDF()">📄 Print / Save as PDF</button>
+            </div>
+        </div>
+
+        <!-- SETTINGS SECTION -->
+        <div id="settings" class="section">
+            <div class="card">
+                <h2>👤 Profile Settings</h2>
+                <form onsubmit="saveProfile(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Your Name</label>
+                            <input type="text" id="setting-name" placeholder="Your name">
+                        </div>
+                        <div class="form-group">
+                            <label>Job Title</label>
+                            <input type="text" id="setting-title" placeholder="RPA Developer">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Summary / Bio</label>
+                        <textarea id="setting-summary" rows="3" placeholder="Brief description about yourself..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Profile</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>💾 Data Management</h2>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">
+                    Your data is stored in your browser's localStorage. Export it to keep a backup or transfer to another device.
+                </p>
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="exportData()">📤 Export Data (JSON)</button>
+                    <button class="btn btn-outline" onclick="document.getElementById('import-file').click()">📥 Import Data</button>
+                    <button class="btn btn-danger" onclick="clearAllData()">🗑️ Clear All Data</button>
+                    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Project Modal -->
+    <div class="modal-overlay" id="project-modal">
+        <div class="modal">
+            <h2 id="modal-title">Add New Project</h2>
+            <form id="project-form" onsubmit="saveProject(event)">
+                <input type="hidden" id="project-edit-id">
+                <div class="form-group">
+                    <label>Project Name</label>
+                    <input type="text" id="project-name" required placeholder="e.g. Invoice Processing Bot">
+                </div>
+                <div class="form-group">
+                    <label>Technology / Platform</label>
+                    <input type="text" id="project-tech" placeholder="e.g. Automation Anywhere, UiPath, Python">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="project-desc" rows="3" placeholder="What does this bot do?"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" id="project-start">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="project-status">
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
+                            <option value="paused">Paused</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Runs per Day (for auto-generation)</label>
+                        <input type="number" id="project-runs-per-day" min="0" value="1" placeholder="e.g. 3">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeProjectModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ===== DATA LAYER =====
+        function getData() {
+            return JSON.parse(localStorage.getItem('rpa_dashboard') || '{"projects":[],"runs":[],"profile":{}}');
+        }
+
+        function setData(data) {
+            localStorage.setItem('rpa_dashboard', JSON.stringify(data));
+        }
+
+        // ===== NAVIGATION =====
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+            refreshAll();
+        }
+
+        // ===== PROJECTS =====
+        function openProjectModal(editId) {
+            const modal = document.getElementById('project-modal');
+            const form = document.getElementById('project-form');
+            form.reset();
+            document.getElementById('project-edit-id').value = '';
+            document.getElementById('modal-title').textContent = 'Add New Project';
+
+            if (editId) {
+                const data = getData();
+                const project = data.projects.find(p => p.id === editId);
+                if (project) {
+                    document.getElementById('modal-title').textContent = 'Edit Project';
+                    document.getElementById('project-edit-id').value = editId;
+                    document.getElementById('project-name').value = project.name;
+                    document.getElementById('project-tech').value = project.tech || '';
+                    document.getElementById('project-desc').value = project.description || '';
+                    document.getElementById('project-start').value = project.startDate || '';
+                    document.getElementById('project-status').value = project.status || 'active';
+                    // Load runsPerDay from config
+                    const config = (data.projectConfig || []).find(c => c.id === editId);
+                    document.getElementById('project-runs-per-day').value = config ? config.runsPerDay : 0;
+                }
+            }
+            modal.classList.add('active');
+        }
+
+        function closeProjectModal() {
+            document.getElementById('project-modal').classList.remove('active');
+        }
+
+        function saveProject(e) {
+            e.preventDefault();
+            const data = getData();
+            const editId = document.getElementById('project-edit-id').value;
+            const runsPerDay = parseInt(document.getElementById('project-runs-per-day').value) || 0;
+            const startDate = document.getElementById('project-start').value || formatLocalDate(new Date());
+
+            const project = {
+                id: editId || Date.now().toString(),
+                name: document.getElementById('project-name').value,
+                tech: document.getElementById('project-tech').value,
+                description: document.getElementById('project-desc').value,
+                startDate: startDate,
+                status: document.getElementById('project-status').value,
+            };
+
+            if (editId) {
+                const idx = data.projects.findIndex(p => p.id === editId);
+                data.projects[idx] = project;
+                // Update projectConfig too
+                const cfgIdx = data.projectConfig.findIndex(c => c.id === editId);
+                if (cfgIdx >= 0) {
+                    data.projectConfig[cfgIdx] = { id: editId, runsPerDay: runsPerDay, startDate: startDate };
+                } else {
+                    data.projectConfig.push({ id: editId, runsPerDay: runsPerDay, startDate: startDate });
+                }
+            } else {
+                data.projects.push(project);
+                // Add to projectConfig for auto-generation
+                if (!data.projectConfig) data.projectConfig = [];
+                data.projectConfig.push({ id: project.id, runsPerDay: runsPerDay, startDate: startDate });
+            }
+
+            setData(data);
+            closeProjectModal();
+            refreshAll();
+        }
+
+        function deleteProject(id) {
+            if (!confirm('Delete this project and all its runs?')) return;
+            const data = getData();
+            data.projects = data.projects.filter(p => p.id !== id);
+            data.runs = data.runs.filter(r => r.projectId !== id);
+            data.projectConfig = (data.projectConfig || []).filter(c => c.id !== id);
+            setData(data);
+            refreshAll();
+        }
+
+        function renderProjects() {
+            const data = getData();
+            const grid = document.getElementById('project-grid');
+
+            if (data.projects.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><p>No projects yet. Click "Add Project" to get started.</p></div>';
+                return;
+            }
+
+            grid.innerHTML = data.projects.map(p => {
+                const runs = data.runs.filter(r => r.projectId === p.id);
+                const successCount = runs.filter(r => r.status === 'success').length;
+                const failCount = runs.filter(r => r.status === 'failed').length;
+                const statusColors = { active: 'var(--success)', completed: 'var(--primary)', paused: 'var(--warning)' };
+
+                return `
+                    <div class="project-card" style="border-left-color:${statusColors[p.status] || 'var(--primary)'}">
+                        <h3>${p.name}</h3>
+                        <div class="meta">${p.tech || 'No technology specified'} • <span class="badge badge-primary">${p.status}</span></div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">${p.description || ''}</p>
+                        <div class="stats">
+                            <span>🔄 ${runs.length} runs</span>
+                            <span style="color:var(--success)">✅ ${successCount}</span>
+                            <span style="color:var(--danger)">❌ ${failCount}</span>
+                        </div>
+                        <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="openProjectModal('${p.id}')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProject('${p.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ===== LOG RUN =====
+        function logRun(e) {
+            e.preventDefault();
+            const data = getData();
+            const run = {
+                id: Date.now().toString(),
+                projectId: document.getElementById('run-project').value,
+                status: document.getElementById('run-status').value,
+                date: document.getElementById('run-date').value,
+                time: document.getElementById('run-time').value,
+                notes: document.getElementById('run-notes').value,
+            };
+            data.runs.push(run);
+            setData(data);
+            document.getElementById('log-run-form').reset();
+            setDefaultDateTime();
+            alert('Run logged successfully!');
+            refreshAll();
+        }
+
+        function bulkLog(e) {
+            e.preventDefault();
+            const data = getData();
+            const projectId = document.getElementById('bulk-project').value;
+            const count = parseInt(document.getElementById('bulk-count').value);
+            const from = new Date(document.getElementById('bulk-from').value);
+            const to = new Date(document.getElementById('bulk-to').value);
+            const status = document.getElementById('bulk-status').value;
+            const skipWeekends = document.getElementById('bulk-skip-weekends').value === 'yes';
+
+            let added = 0;
+            for (let d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) {
+                if (skipWeekends && (d.getDay() === 0 || d.getDay() === 6)) continue;
+                for (let i = 0; i < count; i++) {
+                    data.runs.push({
+                        id: (Date.now() + added).toString(),
+                        projectId,
+                        status,
+                        date: d.toISOString().split('T')[0],
+                        time: '09:00',
+                        notes: 'Bulk logged',
+                    });
+                    added++;
+                }
+            }
+            setData(data);
+            alert(`${added} runs logged successfully!`);
+            document.getElementById('bulk-log-form').reset();
+            refreshAll();
+        }
+
+        // ===== HISTORY =====
+        function renderHistory() {
+            const data = getData();
+            const filterProject = document.getElementById('filter-project').value;
+            const filterStatus = document.getElementById('filter-status').value;
+            const filterPeriod = document.getElementById('filter-period').value;
+
+            let runs = [...data.runs].sort((a, b) => {
+                const da = new Date(a.date + 'T' + (a.time || '00:00'));
+                const db = new Date(b.date + 'T' + (b.time || '00:00'));
+                return db - da;
+            });
+
+            if (filterProject) runs = runs.filter(r => r.projectId === filterProject);
+            if (filterStatus) runs = runs.filter(r => r.status === filterStatus);
+            if (filterPeriod) {
+                const now = new Date();
+                const today = now.toISOString().split('T')[0];
+                if (filterPeriod === 'today') {
+                    runs = runs.filter(r => r.date === today);
+                } else if (filterPeriod === 'week') {
+                    const weekAgo = new Date(now);
+                    weekAgo.setDate(weekAgo.getDate() - 7);
+                    runs = runs.filter(r => new Date(r.date) >= weekAgo);
+                } else if (filterPeriod === 'month') {
+                    const monthAgo = new Date(now);
+                    monthAgo.setMonth(monthAgo.getMonth() - 1);
+                    runs = runs.filter(r => new Date(r.date) >= monthAgo);
+                }
+            }
+
+            const tbody = document.querySelector('#history-table tbody');
+            const empty = document.getElementById('history-empty');
+
+            if (runs.length === 0) {
+                tbody.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            tbody.innerHTML = runs.map(r => {
+                const project = data.projects.find(p => p.id === r.projectId);
+                return `
+                    <tr>
+                        <td>${r.date} ${r.time || ''}</td>
+                        <td>${project ? project.name : 'Unknown'}</td>
+                        <td><span class="badge badge-${r.status === 'success' ? 'success' : 'danger'}">${r.status}</span></td>
+                        <td>${r.notes || '-'}</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('${r.id}')">Delete</button></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function deleteRun(id) {
+            const data = getData();
+            data.runs = data.runs.filter(r => r.id !== id);
+            setData(data);
+            refreshAll();
+        }
+
+        // ===== OVERVIEW / STATS =====
+        function setOverviewFilter(preset) {
+            const now = new Date();
+            const fromEl = document.getElementById('overview-date-from');
+            const toEl = document.getElementById('overview-date-to');
+
+            if (preset === 'today') {
+                fromEl.value = formatLocalDate(now);
+                toEl.value = formatLocalDate(now);
+            } else if (preset === 'week') {
+                const weekAgo = new Date(now);
+                weekAgo.setDate(weekAgo.getDate() - 6);
+                fromEl.value = formatLocalDate(weekAgo);
+                toEl.value = formatLocalDate(now);
+            } else if (preset === 'month') {
+                const monthAgo = new Date(now);
+                monthAgo.setMonth(monthAgo.getMonth() - 1);
+                fromEl.value = formatLocalDate(monthAgo);
+                toEl.value = formatLocalDate(now);
+            } else {
+                fromEl.value = '';
+                toEl.value = '';
+            }
+            refreshAll();
+        }
+
+        function getFilteredRuns() {
+            const data = getData();
+            let runs = data.runs;
+            const fromVal = document.getElementById('overview-date-from').value;
+            const toVal = document.getElementById('overview-date-to').value;
+
+            if (fromVal) {
+                runs = runs.filter(r => r.date >= fromVal);
+            }
+            if (toVal) {
+                runs = runs.filter(r => r.date <= toVal);
+            }
+            return runs;
+        }
+
+        function renderOverview() {
+            const data = getData();
+            const runs = getFilteredRuns();
+            const total = runs.length;
+            const success = runs.filter(r => r.status === 'success').length;
+            const failed = runs.filter(r => r.status === 'failed').length;
+            const rate = total > 0 ? ((success / total) * 100).toFixed(1) : 0;
+
+            document.getElementById('stats-grid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${data.projects.length}</div>
+                    <div class="stat-label">Total Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${total}</div>
+                    <div class="stat-label">Total Runs</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-value">${success}</div>
+                    <div class="stat-label">Successful</div>
+                </div>
+                <div class="stat-card danger">
+                    <div class="stat-value">${failed}</div>
+                    <div class="stat-label">Failed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${rate}%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+            `;
+
+            // Weekly chart
+            renderWeeklyChart();
+
+            // Top projects table
+            renderTopProjects();
+        }
+
+        // Track chart status filter
+        let chartStatusFilter = 'all'; // 'all', 'success', 'failed'
+
+        function setChartStatusFilter(filter) {
+            chartStatusFilter = filter;
+            // Update button styles
+            document.getElementById('chart-filter-all').className = 'btn btn-sm ' + (filter === 'all' ? '' : 'btn-outline');
+            document.getElementById('chart-filter-all').style = filter === 'all' ? 'background:var(--primary);color:white;' : '';
+            document.getElementById('chart-filter-success').className = 'btn btn-sm ' + (filter === 'success' ? '' : 'btn-outline');
+            document.getElementById('chart-filter-success').style = filter === 'success' ? 'background:var(--success);color:white;' : '';
+            document.getElementById('chart-filter-failed').className = 'btn btn-sm ' + (filter === 'failed' ? '' : 'btn-outline');
+            document.getElementById('chart-filter-failed').style = filter === 'failed' ? 'background:var(--danger);color:white;' : '';
+            renderWeeklyChart();
+        }
+
+        function renderWeeklyChart() {
+            const data = getData();
+            const chart = document.getElementById('weekly-chart');
+            const period = document.getElementById('chart-period').value;
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const now = new Date();
+            let chartData = [];
+
+            if (period === 'day') {
+                // Last 7 days, today first
+                for (let i = 0; i <= 6; i++) {
+                    const d = new Date(now);
+                    d.setDate(d.getDate() - i);
+                    const dateStr = formatLocalDate(d);
+                    const dayRuns = data.runs.filter(r => r.date === dateStr);
+                    chartData.push({
+                        label: days[d.getDay()],
+                        sublabel: dateStr.slice(5),
+                        success: dayRuns.filter(r => r.status === 'success').length,
+                        failed: dayRuns.filter(r => r.status === 'failed').length,
+                        isFirst: i === 0,
+                    });
+                }
+            } else if (period === 'week') {
+                // Last 4 weeks, current week first
+                for (let w = 0; w < 4; w++) {
+                    const weekEnd = new Date(now);
+                    weekEnd.setDate(weekEnd.getDate() - (w * 7));
+                    const weekStart = new Date(weekEnd);
+                    weekStart.setDate(weekStart.getDate() - 6);
+
+                    const startStr = formatLocalDate(weekStart);
+                    const endStr = formatLocalDate(weekEnd);
+                    const weekRuns = data.runs.filter(r => r.date >= startStr && r.date <= endStr);
+
+                    chartData.push({
+                        label: w === 0 ? 'This Week' : `${w}w ago`,
+                        sublabel: `${startStr.slice(5)} - ${endStr.slice(5)}`,
+                        success: weekRuns.filter(r => r.status === 'success').length,
+                        failed: weekRuns.filter(r => r.status === 'failed').length,
+                        isFirst: w === 0,
+                    });
+                }
+            } else if (period === 'month') {
+                // Last 6 months, current month first
+                for (let m = 0; m < 6; m++) {
+                    const d = new Date(now.getFullYear(), now.getMonth() - m, 1);
+                    const year = d.getFullYear();
+                    const month = d.getMonth();
+                    const monthStr = `${year}-${String(month + 1).padStart(2, '0')}`;
+                    const monthRuns = data.runs.filter(r => r.date.startsWith(monthStr));
+
+                    chartData.push({
+                        label: months[month],
+                        sublabel: `${year}`,
+                        success: monthRuns.filter(r => r.status === 'success').length,
+                        failed: monthRuns.filter(r => r.status === 'failed').length,
+                        isFirst: m === 0,
+                    });
+                }
+            } else if (period === 'year') {
+                // All years with data, current year first
+                const years = [...new Set(data.runs.map(r => r.date.slice(0, 4)))].sort().reverse();
+                if (years.length === 0) years.push(String(now.getFullYear()));
+                years.forEach((yr, idx) => {
+                    const yearRuns = data.runs.filter(r => r.date.startsWith(yr));
+                    chartData.push({
+                        label: yr,
+                        sublabel: '',
+                        success: yearRuns.filter(r => r.status === 'success').length,
+                        failed: yearRuns.filter(r => r.status === 'failed').length,
+                        isFirst: idx === 0,
+                    });
+                });
+            }
+
+            const maxVal = Math.max(...chartData.map(d => {
+                if (chartStatusFilter === 'success') return d.success;
+                if (chartStatusFilter === 'failed') return d.failed;
+                return d.success + d.failed;
+            }), 1);
+
+            chart.innerHTML = chartData.map(d => {
+                const showSuccess = chartStatusFilter === 'all' || chartStatusFilter === 'success';
+                const showFailed = chartStatusFilter === 'all' || chartStatusFilter === 'failed';
+                const sH = showSuccess ? (d.success / maxVal) * 180 : 0;
+                const fH = showFailed ? (d.failed / maxVal) * 180 : 0;
+                const firstStyle = d.isFirst ? 'font-weight:700; color:var(--primary);' : '';
+                return `
+                    <div class="bar-group">
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:2px; height:180px; justify-content:flex-end;">
+                            ${showFailed ? `<div class="bar fail" style="height:${fH}px; width:20px;" title="${d.failed} failed"></div>` : ''}
+                            ${showSuccess ? `<div class="bar success" style="height:${sH}px; width:20px;" title="${d.success} success"></div>` : ''}
+                        </div>
+                        <div class="bar-label" style="${firstStyle}">${d.isFirst ? '▶ ' : ''}${d.label}<br><small>${d.sublabel}</small></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTopProjects() {
+            const data = getData();
+            const filteredRuns = getFilteredRuns();
+            const tbody = document.querySelector('#top-projects-table tbody');
+
+            const projectStats = data.projects.map(p => {
+                const runs = filteredRuns.filter(r => r.projectId === p.id);
+                const success = runs.filter(r => r.status === 'success').length;
+                const failed = runs.filter(r => r.status === 'failed').length;
+                const rate = runs.length > 0 ? ((success / runs.length) * 100).toFixed(1) : 0;
+                return { ...p, totalRuns: runs.length, success, failed, rate };
+            }).sort((a, b) => b.totalRuns - a.totalRuns).slice(0, 5);
+
+            if (projectStats.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No data yet</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = projectStats.map(p => `
+                <tr>
+                    <td><strong>${p.name}</strong></td>
+                    <td>${p.totalRuns}</td>
+                    <td style="color:var(--success)">${p.success}</td>
+                    <td style="color:var(--danger)">${p.failed}</td>
+                    <td><span class="badge badge-${parseFloat(p.rate) >= 90 ? 'success' : parseFloat(p.rate) >= 70 ? 'primary' : 'danger'}">${p.rate}%</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // ===== PORTFOLIO =====
+        function renderPortfolio() {
+            const data = getData();
+            const profile = data.profile || {};
+
+            document.getElementById('profile-name').textContent = profile.name || 'RPA Developer';
+            document.getElementById('profile-title').textContent = profile.title || 'Robotic Process Automation Specialist';
+            document.getElementById('profile-summary').textContent = profile.summary || 'Experienced RPA Developer specializing in process automation.';
+            document.getElementById('profile-avatar').textContent = (profile.name || 'R')[0].toUpperCase();
+
+            const runs = data.runs;
+            const total = runs.length;
+            const success = runs.filter(r => r.status === 'success').length;
+            const rate = total > 0 ? ((success / total) * 100).toFixed(1) : 0;
+
+            document.getElementById('portfolio-stats').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${data.projects.length}</div>
+                    <div class="stat-label">Projects Delivered</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-value">${total.toLocaleString()}</div>
+                    <div class="stat-label">Total Executions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${rate}%</div>
+                    <div class="stat-label">Overall Success Rate</div>
+                </div>
+            `;
+
+            const tbody = document.querySelector('#portfolio-table tbody');
+            const projectStats = data.projects.map(p => {
+                const pRuns = runs.filter(r => r.projectId === p.id);
+                const pSuccess = pRuns.filter(r => r.status === 'success').length;
+                const pRate = pRuns.length > 0 ? ((pSuccess / pRuns.length) * 100).toFixed(1) : 0;
+                return { ...p, totalRuns: pRuns.length, rate: pRate };
+            });
+
+            tbody.innerHTML = projectStats.map(p => `
+                <tr>
+                    <td><strong>${p.name}</strong><br><small style="color:var(--text-muted)">${p.description || ''}</small></td>
+                    <td>${p.tech || '-'}</td>
+                    <td>${p.totalRuns}</td>
+                    <td><span class="badge badge-${parseFloat(p.rate) >= 90 ? 'success' : parseFloat(p.rate) >= 70 ? 'primary' : 'danger'}">${p.rate}%</span></td>
+                    <td><span class="badge badge-${p.status === 'active' ? 'success' : 'primary'}">${p.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function exportPortfolioPDF() {
+            window.print();
+        }
+
+        // ===== SETTINGS =====
+        function loadProfile() {
+            const data = getData();
+            const profile = data.profile || {};
+            document.getElementById('setting-name').value = profile.name || '';
+            document.getElementById('setting-title').value = profile.title || '';
+            document.getElementById('setting-summary').value = profile.summary || '';
+        }
+
+        function saveProfile(e) {
+            e.preventDefault();
+            const data = getData();
+            data.profile = {
+                name: document.getElementById('setting-name').value,
+                title: document.getElementById('setting-title').value,
+                summary: document.getElementById('setting-summary').value,
+            };
+            setData(data);
+            alert('Profile saved!');
+            refreshAll();
+        }
+
+        function exportData() {
+            const data = getData();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `rpa_dashboard_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importData(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    const data = JSON.parse(ev.target.result);
+                    if (data.projects && data.runs) {
+                        if (confirm('This will replace all current data. Continue?')) {
+                            setData(data);
+                            alert('Data imported successfully!');
+                            refreshAll();
+                        }
+                    } else {
+                        alert('Invalid file format.');
+                    }
+                } catch (err) {
+                    alert('Error reading file: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+            e.target.value = '';
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure? This will delete ALL projects and run history.')) {
+                if (confirm('This cannot be undone. Really clear everything?')) {
+                    localStorage.removeItem('rpa_dashboard');
+                    refreshAll();
+                    alert('All data cleared.');
+                }
+            }
+        }
+
+        // ===== HELPERS =====
+        function populateProjectDropdowns() {
+            const data = getData();
+            const selects = ['run-project', 'bulk-project', 'filter-project'];
+            selects.forEach(id => {
+                const sel = document.getElementById(id);
+                const currentVal = sel.value;
+                const firstOption = sel.options[0];
+                sel.innerHTML = '';
+                sel.appendChild(firstOption);
+                data.projects.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.id;
+                    opt.textContent = p.name;
+                    sel.appendChild(opt);
+                });
+                sel.value = currentVal;
+            });
+        }
+
+        function setDefaultDateTime() {
+            const now = new Date();
+            document.getElementById('run-date').value = now.toISOString().split('T')[0];
+            document.getElementById('run-time').value = now.toTimeString().slice(0, 5);
+        }
+
+        function refreshAll() {
+            populateProjectDropdowns();
+            renderOverview();
+            renderProjects();
+            renderHistory();
+            renderPortfolio();
+            loadProfile();
+        }
+
+        // ===== SEED DATA =====
+        function seedInitialData() {
+            const existing = localStorage.getItem('rpa_dashboard');
+            if (existing) return; // Don't overwrite if data already exists
+
+            const projects = [
+                { id: 'p1', name: 'Big Lot', tech: 'Automation Anywhere', description: 'Automated big lot trade processing and reporting', startDate: '2026-06-04', status: 'active', runsPerDay: 3 },
+                { id: 'p2', name: 'Calculate Dividend VT', tech: 'Automation Anywhere', description: 'Calculates dividend for Valutrades accounts', startDate: '2026-06-04', status: 'active', runsPerDay: 2 },
+                { id: 'p3', name: 'Filtration Setting', tech: 'Automation Anywhere', description: 'Manages and updates filtration settings across platforms', startDate: '2026-06-04', status: 'active', runsPerDay: 12 },
+                { id: 'p4', name: 'Free Margin', tech: 'Automation Anywhere', description: 'Monitors and reports free margin levels', startDate: '2026-06-04', status: 'active', runsPerDay: 5 },
+                { id: 'p5', name: 'Hub Routing', tech: 'Automation Anywhere', description: 'Automates hub routing configuration and updates', startDate: '2026-06-04', status: 'active', runsPerDay: 1 },
+                { id: 'p6', name: 'LP Swap', tech: 'Automation Anywhere', description: 'Processes LP swap rate comparisons and reports', startDate: '2026-06-04', status: 'active', runsPerDay: 1 },
+                { id: 'p7', name: 'Open Position', tech: 'Automation Anywhere', description: 'Generates open position reports for risk monitoring', startDate: '2026-06-04', status: 'active', runsPerDay: 3 },
+                { id: 'p8', name: 'Set Hangseng Max Lot', tech: 'Automation Anywhere', description: 'Sets maximum lot size for Hangseng instruments', startDate: '2026-06-04', status: 'active', runsPerDay: 2 },
+                { id: 'p9', name: 'Set Margin', tech: 'Automation Anywhere', description: 'Configures margin settings across trading platforms', startDate: '2026-06-04', status: 'active', runsPerDay: 4 },
+                { id: 'p10', name: 'Swap Multi Surya', tech: 'Automation Anywhere', description: 'Processes multi-swap calculations for Surya accounts', startDate: '2026-06-04', status: 'active', runsPerDay: 1 },
+            ];
+
+            // Store project config (with runsPerDay) separately for dynamic generation
+            const cleanProjects = projects.map(({ runsPerDay, ...rest }) => rest);
+
+            const data = {
+                projects: cleanProjects,
+                projectConfig: projects.map(p => ({ id: p.id, runsPerDay: p.runsPerDay, startDate: p.startDate })),
+                runs: [],
+                profile: {
+                    name: 'RPA Developer',
+                    title: 'Robotic Process Automation Specialist',
+                    summary: 'Experienced RPA Developer building automated solutions with Automation Anywhere. Specializing in trading operations, risk monitoring, and financial process automation.',
+                },
+                lastGeneratedDate: null, // Track last date we generated runs for
+            };
+
+            setData(data);
+        }
+
+        // Generate runs dynamically up to today
+        function generateRunsUpToToday() {
+            const data = getData();
+            if (!data.projectConfig || data.projectConfig.length === 0) return;
+
+            // Use local date string to avoid timezone issues
+            const now = new Date();
+            const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+
+            // Find the last date we generated for
+            const lastGenDate = data.lastGeneratedDate;
+
+            // Determine start date for new generation
+            let genStartStr;
+            if (!lastGenDate) {
+                // First time: start from today (the first day)
+                genStartStr = todayStr;
+            } else {
+                // Resume from day after last generated
+                const last = parseLocalDate(lastGenDate);
+                last.setDate(last.getDate() + 1);
+                genStartStr = formatLocalDate(last);
+            }
+
+            const genStart = parseLocalDate(genStartStr);
+            const todayDate = parseLocalDate(todayStr);
+
+            if (genStart > todayDate) return; // Already up to date
+
+            // Use a seeded pseudo-random so results are consistent per date
+            function seededRandom(seed) {
+                let x = Math.sin(seed) * 10000;
+                return x - Math.floor(x);
+            }
+
+            let runId = data.runs.length > 0
+                ? Math.max(...data.runs.map(r => parseInt(r.id.replace('r', '')) || 0)) + 1
+                : 1;
+
+            for (let d = new Date(genStart); d <= todayDate; d.setDate(d.getDate() + 1)) {
+                const day = d.getDay();
+                if (day === 0 || day === 6) continue; // Skip weekends
+
+                const dateStr = formatLocalDate(d);
+                const dateSeed = d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate();
+
+                data.projectConfig.forEach((config, pIdx) => {
+                    // Only generate runs if this date is on or after the project's start date
+                    const projectStart = parseLocalDate(config.startDate || '2026-06-04');
+                    if (d < projectStart) return;
+
+                    for (let i = 0; i < config.runsPerDay; i++) {
+                        // All auto-generated runs are success
+                        // User will manually log failures when issues occur
+                        const seed = dateSeed + pIdx * 100 + i;
+                        const hourSeed = seededRandom(seed + 1);
+                        const minSeed = seededRandom(seed + 2);
+                        const hour = 6 + Math.floor(hourSeed * 12);
+                        const minute = Math.floor(minSeed * 60);
+                        const time = `${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')}`;
+
+                        data.runs.push({
+                            id: `r${runId++}`,
+                            projectId: config.id,
+                            status: 'success',
+                            date: dateStr,
+                            time: time,
+                            notes: '',
+                        });
+                    }
+                });
+            }
+
+            data.lastGeneratedDate = todayStr;
+            setData(data);
+        }
+
+        // Helper: parse "YYYY-MM-DD" as local date (not UTC)
+        function parseLocalDate(str) {
+            const [y, m, d] = str.split('-').map(Number);
+            return new Date(y, m - 1, d);
+        }
+
+        // Helper: format Date to "YYYY-MM-DD" using local time
+        function formatLocalDate(date) {
+            return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+        }
+
+        // ===== INIT =====
+        document.addEventListener('DOMContentLoaded', () => {
+            seedInitialData();
+            generateRunsUpToToday();
+            setDefaultDateTime();
+            refreshAll();
+        });
+
+        // Close modal on outside click
+        document.getElementById('project-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeProjectModal();
+        });
+    </script>
+</body>
+</html>
