@@ -513,18 +513,39 @@
     </div>
 
     <nav class="nav">
-        <button class="active" onclick="showSection('overview')">📊 Overview</button>
+        <button class="" onclick="showSection('overview')">📊 Overview</button>
         <button onclick="showSection('projects')">📁 Projects</button>
         <button onclick="showSection('log-run')">▶️ Log Run</button>
         <button onclick="showSection('history')">📋 Run History</button>
         <button onclick="showSection('portfolio')">🏆 Portfolio</button>
-        <button onclick="showSection('settings')">⚙️ Settings</button>
+        <button onclick="showSection('settings')" class="active">⚙️ Settings</button>
     </nav>
 
     <div class="container">
         <!-- OVERVIEW SECTION -->
-        <div id="overview" class="section active">
-            <div class="stats-grid" id="stats-grid"></div>
+        <div id="overview" class="section">
+            <div class="stats-grid" id="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">11</div>
+                    <div class="stat-label">Total Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">68</div>
+                    <div class="stat-label">Total Runs</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-value">68</div>
+                    <div class="stat-label">Successful</div>
+                </div>
+                <div class="stat-card danger">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Failed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">100.0%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+            </div>
 
             <div class="card" style="margin-bottom:1.5rem;">
                 <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
@@ -550,7 +571,63 @@
                     </select>
                 </div>
                 <div class="chart-container">
-                    <div class="bar-chart" id="weekly-chart"></div>
+                    <div class="bar-chart" id="weekly-chart">
+                    <div class="bar-group">
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:2px; height:180px; justify-content:flex-end;">
+                            <div class="bar fail" style="height:0px; width:20px;" title="0 failed"></div>
+                            <div class="bar success" style="height:180px; width:20px;" title="34 success"></div>
+                        </div>
+                        <div class="bar-label" style="font-weight:700; color:var(--primary);">▶ Fri<br><small>06-05</small></div>
+                    </div>
+                
+                    <div class="bar-group">
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:2px; height:180px; justify-content:flex-end;">
+                            <div class="bar fail" style="height:0px; width:20px;" title="0 failed"></div>
+                            <div class="bar success" style="height:180px; width:20px;" title="34 success"></div>
+                        </div>
+                        <div class="bar-label" style="">Thu<br><small>06-04</small></div>
+                    </div>
+                
+                    <div class="bar-group">
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:2px; height:180px; justify-content:flex-end;">
+                            <div class="bar fail" style="height:0px; width:20px;" title="0 failed"></div>
+                            <div class="bar success" style="height:0px; width:20px;" title="0 success"></div>
+                        </div>
+                        <div class="bar-label" style="">Wed<br><small>06-03</small></div>
+                    </div>
+                
+                    <div class="bar-group">
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:2px; height:180px; justify-content:flex-end;">
+                            <div class="bar fail" style="height:0px; width:20px;" title="0 failed"></div>
+                            <div class="bar success" style="height:0px; width:20px;" title="0 success"></div>
+                        </div>
+                        <div class="bar-label" style="">Tue<br><small>06-02</small></div>
+                    </div>
+                
+                    <div class="bar-group">
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:2px; height:180px; justify-content:flex-end;">
+                            <div class="bar fail" style="height:0px; width:20px;" title="0 failed"></div>
+                            <div class="bar success" style="height:0px; width:20px;" title="0 success"></div>
+                        </div>
+                        <div class="bar-label" style="">Mon<br><small>06-01</small></div>
+                    </div>
+                
+                    <div class="bar-group">
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:2px; height:180px; justify-content:flex-end;">
+                            <div class="bar fail" style="height:0px; width:20px;" title="0 failed"></div>
+                            <div class="bar success" style="height:0px; width:20px;" title="0 success"></div>
+                        </div>
+                        <div class="bar-label" style="">Sun<br><small>05-31</small></div>
+                    </div>
+                
+                    <div class="bar-group">
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:2px; height:180px; justify-content:flex-end;">
+                            <div class="bar fail" style="height:0px; width:20px;" title="0 failed"></div>
+                            <div class="bar success" style="height:0px; width:20px;" title="0 success"></div>
+                        </div>
+                        <div class="bar-label" style="">Sat<br><small>05-30</small></div>
+                    </div>
+                </div>
                 </div>
                 <div style="display:flex; gap:1rem; justify-content:center; font-size:0.85rem; margin-top:0.5rem;">
                     <button id="chart-filter-all" class="btn btn-sm" style="background:var(--primary);color:white;" onclick="setChartStatusFilter('all')">All</button>
@@ -572,7 +649,47 @@
                                 <th>Success Rate</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                <tr>
+                    <td><strong>Filtration Setting</strong></td>
+                    <td>24</td>
+                    <td style="color:var(--success)">24</td>
+                    <td style="color:var(--danger)">0</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>Free Margin</strong></td>
+                    <td>10</td>
+                    <td style="color:var(--success)">10</td>
+                    <td style="color:var(--danger)">0</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>Set Margin</strong></td>
+                    <td>8</td>
+                    <td style="color:var(--success)">8</td>
+                    <td style="color:var(--danger)">0</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>Big Lot</strong></td>
+                    <td>6</td>
+                    <td style="color:var(--success)">6</td>
+                    <td style="color:var(--danger)">0</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>Open Position</strong></td>
+                    <td>6</td>
+                    <td style="color:var(--success)">6</td>
+                    <td style="color:var(--danger)">0</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                </tr>
+            </tbody>
                     </table>
                 </div>
             </div>
@@ -585,7 +702,172 @@
                     <h2>📁 My RPA Projects</h2>
                     <button class="btn btn-primary" onclick="openProjectModal()">+ Add Project</button>
                 </div>
-                <div class="project-grid" id="project-grid"></div>
+                <div class="project-grid" id="project-grid">
+                    <div class="project-card" style="border-left-color:var(--success)">
+                        <h3>Big Lot</h3>
+                        <div class="meta">Automation Anywhere • <span class="badge badge-primary">active</span></div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">Automated big lot trade processing and reporting</p>
+                        <div class="stats">
+                            <span>🔄 6 runs</span>
+                            <span style="color:var(--success)">✅ 6</span>
+                            <span style="color:var(--danger)">❌ 0</span>
+                        </div>
+                        <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="openProjectModal('p1')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProject('p1')">Delete</button>
+                        </div>
+                    </div>
+                
+                    <div class="project-card" style="border-left-color:var(--success)">
+                        <h3>Calculate Dividend VT</h3>
+                        <div class="meta">Automation Anywhere • <span class="badge badge-primary">active</span></div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">Calculates dividend for Valutrades accounts</p>
+                        <div class="stats">
+                            <span>🔄 4 runs</span>
+                            <span style="color:var(--success)">✅ 4</span>
+                            <span style="color:var(--danger)">❌ 0</span>
+                        </div>
+                        <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="openProjectModal('p2')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProject('p2')">Delete</button>
+                        </div>
+                    </div>
+                
+                    <div class="project-card" style="border-left-color:var(--success)">
+                        <h3>Filtration Setting</h3>
+                        <div class="meta">Automation Anywhere • <span class="badge badge-primary">active</span></div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">Manages and updates filtration settings across platforms</p>
+                        <div class="stats">
+                            <span>🔄 24 runs</span>
+                            <span style="color:var(--success)">✅ 24</span>
+                            <span style="color:var(--danger)">❌ 0</span>
+                        </div>
+                        <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="openProjectModal('p3')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProject('p3')">Delete</button>
+                        </div>
+                    </div>
+                
+                    <div class="project-card" style="border-left-color:var(--success)">
+                        <h3>Free Margin</h3>
+                        <div class="meta">Automation Anywhere • <span class="badge badge-primary">active</span></div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">Monitors and reports free margin levels</p>
+                        <div class="stats">
+                            <span>🔄 10 runs</span>
+                            <span style="color:var(--success)">✅ 10</span>
+                            <span style="color:var(--danger)">❌ 0</span>
+                        </div>
+                        <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="openProjectModal('p4')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProject('p4')">Delete</button>
+                        </div>
+                    </div>
+                
+                    <div class="project-card" style="border-left-color:var(--success)">
+                        <h3>Hub Routing</h3>
+                        <div class="meta">Automation Anywhere • <span class="badge badge-primary">active</span></div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">Automates hub routing configuration and updates</p>
+                        <div class="stats">
+                            <span>🔄 2 runs</span>
+                            <span style="color:var(--success)">✅ 2</span>
+                            <span style="color:var(--danger)">❌ 0</span>
+                        </div>
+                        <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="openProjectModal('p5')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProject('p5')">Delete</button>
+                        </div>
+                    </div>
+                
+                    <div class="project-card" style="border-left-color:var(--success)">
+                        <h3>LP Swap</h3>
+                        <div class="meta">Automation Anywhere • <span class="badge badge-primary">active</span></div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">Processes LP swap rate comparisons and reports</p>
+                        <div class="stats">
+                            <span>🔄 2 runs</span>
+                            <span style="color:var(--success)">✅ 2</span>
+                            <span style="color:var(--danger)">❌ 0</span>
+                        </div>
+                        <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="openProjectModal('p6')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProject('p6')">Delete</button>
+                        </div>
+                    </div>
+                
+                    <div class="project-card" style="border-left-color:var(--success)">
+                        <h3>Open Position</h3>
+                        <div class="meta">Automation Anywhere • <span class="badge badge-primary">active</span></div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">Generates open position reports for risk monitoring</p>
+                        <div class="stats">
+                            <span>🔄 6 runs</span>
+                            <span style="color:var(--success)">✅ 6</span>
+                            <span style="color:var(--danger)">❌ 0</span>
+                        </div>
+                        <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="openProjectModal('p7')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProject('p7')">Delete</button>
+                        </div>
+                    </div>
+                
+                    <div class="project-card" style="border-left-color:var(--success)">
+                        <h3>Set Hangseng Max Lot</h3>
+                        <div class="meta">Automation Anywhere • <span class="badge badge-primary">active</span></div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">Sets maximum lot size for Hangseng instruments</p>
+                        <div class="stats">
+                            <span>🔄 4 runs</span>
+                            <span style="color:var(--success)">✅ 4</span>
+                            <span style="color:var(--danger)">❌ 0</span>
+                        </div>
+                        <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="openProjectModal('p8')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProject('p8')">Delete</button>
+                        </div>
+                    </div>
+                
+                    <div class="project-card" style="border-left-color:var(--success)">
+                        <h3>Set Margin</h3>
+                        <div class="meta">Automation Anywhere • <span class="badge badge-primary">active</span></div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">Configures margin settings across trading platforms</p>
+                        <div class="stats">
+                            <span>🔄 8 runs</span>
+                            <span style="color:var(--success)">✅ 8</span>
+                            <span style="color:var(--danger)">❌ 0</span>
+                        </div>
+                        <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="openProjectModal('p9')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProject('p9')">Delete</button>
+                        </div>
+                    </div>
+                
+                    <div class="project-card" style="border-left-color:var(--success)">
+                        <h3>Swap Multi Surya</h3>
+                        <div class="meta">Automation Anywhere • <span class="badge badge-primary">active</span></div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">Processes multi-swap calculations for Surya accounts</p>
+                        <div class="stats">
+                            <span>🔄 2 runs</span>
+                            <span style="color:var(--success)">✅ 2</span>
+                            <span style="color:var(--danger)">❌ 0</span>
+                        </div>
+                        <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="openProjectModal('p10')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProject('p10')">Delete</button>
+                        </div>
+                    </div>
+                
+                    <div class="project-card" style="border-left-color:var(--success)">
+                        <h3>Trailing Check</h3>
+                        <div class="meta">Automation Anywhere • <span class="badge badge-primary">active</span></div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;"></p>
+                        <div class="stats">
+                            <span>🔄 0 runs</span>
+                            <span style="color:var(--success)">✅ 0</span>
+                            <span style="color:var(--danger)">❌ 0</span>
+                        </div>
+                        <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="openProjectModal('1780640295799')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProject('1780640295799')">Delete</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -597,13 +879,11 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Project</label>
-                            <select id="run-project" required>
-                                <option value="">Select project...</option>
-                            </select>
+                            <select id="run-project" required=""><option value="">Select project...</option><option value="p1">Big Lot</option><option value="p2">Calculate Dividend VT</option><option value="p3">Filtration Setting</option><option value="p4">Free Margin</option><option value="p5">Hub Routing</option><option value="p6">LP Swap</option><option value="p7">Open Position</option><option value="p8">Set Hangseng Max Lot</option><option value="p9">Set Margin</option><option value="p10">Swap Multi Surya</option><option value="1780640295799">Trailing Check</option></select>
                         </div>
                         <div class="form-group">
                             <label>Status</label>
-                            <select id="run-status" required>
+                            <select id="run-status" required="">
                                 <option value="success">✅ Success</option>
                                 <option value="failed">❌ Failed</option>
                             </select>
@@ -612,11 +892,11 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Date</label>
-                            <input type="date" id="run-date" required>
+                            <input type="date" id="run-date" required="">
                         </div>
                         <div class="form-group">
                             <label>Time</label>
-                            <input type="time" id="run-time" required>
+                            <input type="time" id="run-time" required="">
                         </div>
                     </div>
                     <div class="form-group">
@@ -635,29 +915,27 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Project</label>
-                            <select id="bulk-project" required>
-                                <option value="">Select project...</option>
-                            </select>
+                            <select id="bulk-project" required=""><option value="">Select project...</option><option value="p1">Big Lot</option><option value="p2">Calculate Dividend VT</option><option value="p3">Filtration Setting</option><option value="p4">Free Margin</option><option value="p5">Hub Routing</option><option value="p6">LP Swap</option><option value="p7">Open Position</option><option value="p8">Set Hangseng Max Lot</option><option value="p9">Set Margin</option><option value="p10">Swap Multi Surya</option><option value="1780640295799">Trailing Check</option></select>
                         </div>
                         <div class="form-group">
                             <label>Runs per Day</label>
-                            <input type="number" id="bulk-count" min="1" value="1" required>
+                            <input type="number" id="bulk-count" min="1" value="1" required="">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>From Date</label>
-                            <input type="date" id="bulk-from" required>
+                            <input type="date" id="bulk-from" required="">
                         </div>
                         <div class="form-group">
                             <label>To Date</label>
-                            <input type="date" id="bulk-to" required>
+                            <input type="date" id="bulk-to" required="">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Status</label>
-                            <select id="bulk-status" required>
+                            <select id="bulk-status" required="">
                                 <option value="success">✅ All Success</option>
                                 <option value="failed">❌ All Failed</option>
                             </select>
@@ -680,9 +958,7 @@
             <div class="card">
                 <h2>📋 Run History</h2>
                 <div class="filter-bar">
-                    <select id="filter-project" onchange="renderHistory()">
-                        <option value="">All Projects</option>
-                    </select>
+                    <select id="filter-project" onchange="renderHistory()"><option value="">All Projects</option><option value="p1">Big Lot</option><option value="p2">Calculate Dividend VT</option><option value="p3">Filtration Setting</option><option value="p4">Free Margin</option><option value="p5">Hub Routing</option><option value="p6">LP Swap</option><option value="p7">Open Position</option><option value="p8">Set Hangseng Max Lot</option><option value="p9">Set Margin</option><option value="p10">Swap Multi Surya</option><option value="1780640295799">Trailing Check</option></select>
                     <select id="filter-status" onchange="renderHistory()">
                         <option value="">All Status</option>
                         <option value="success">Success</option>
@@ -699,14 +975,558 @@
                     <table id="history-table">
                         <thead>
                             <tr>
-                                <th>Date & Time</th>
+                                <th>Date &amp; Time</th>
                                 <th>Project</th>
                                 <th>Status</th>
                                 <th>Notes</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                    <tr>
+                        <td>2026-06-05 17:18</td>
+                        <td>LP Swap</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r58')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 17:12</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r40')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 16:49</td>
+                        <td>Free Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r53')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 15:29</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r43')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 15:07</td>
+                        <td>Free Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r54')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 15:06</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r50')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 15:01</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r48')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 14:29</td>
+                        <td>Set Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r66')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 13:41</td>
+                        <td>Set Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r65')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 13:35</td>
+                        <td>Free Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r56')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 13:18</td>
+                        <td>Open Position</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r61')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 12:49</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r42')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 12:37</td>
+                        <td>Set Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r64')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 12:27</td>
+                        <td>Hub Routing</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r57')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 12:17</td>
+                        <td>Open Position</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r59')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 11:46</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r47')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 11:23</td>
+                        <td>Set Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r67')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 11:20</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r44')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 11:18</td>
+                        <td>Big Lot</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r35')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 11:07</td>
+                        <td>Set Hangseng Max Lot</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r62')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 11:06</td>
+                        <td>Calculate Dividend VT</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r39')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 10:11</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r45')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 09:37</td>
+                        <td>Open Position</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r60')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 09:06</td>
+                        <td>Big Lot</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r36')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 08:33</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r41')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 08:27</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r46')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 07:52</td>
+                        <td>Big Lot</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r37')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 07:51</td>
+                        <td>Free Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r52')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 07:35</td>
+                        <td>Free Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r55')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 07:12</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r51')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 07:04</td>
+                        <td>Set Hangseng Max Lot</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r63')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 06:48</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r49')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 06:28</td>
+                        <td>Calculate Dividend VT</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r38')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-05 06:16</td>
+                        <td>Swap Multi Surya</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r68')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 17:12</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r7')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 17:07</td>
+                        <td>Free Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r18')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 16:49</td>
+                        <td>Free Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r20')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 15:58</td>
+                        <td>LP Swap</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r24')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 15:29</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r10')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 15:07</td>
+                        <td>Free Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r21')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 15:06</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r17')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 15:01</td>
+                        <td>Calculate Dividend VT</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r4')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 15:01</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r15')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 14:33</td>
+                        <td>Set Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r30')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 14:29</td>
+                        <td>Set Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r33')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 13:41</td>
+                        <td>Set Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r32')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 12:59</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r6')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 12:49</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r9')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 12:37</td>
+                        <td>Set Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r31')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 12:27</td>
+                        <td>Set Hangseng Max Lot</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r28')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 12:17</td>
+                        <td>Open Position</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r26')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 11:46</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r14')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 11:20</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r11')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 11:18</td>
+                        <td>Big Lot</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r2')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 11:07</td>
+                        <td>Set Hangseng Max Lot</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r29')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 10:33</td>
+                        <td>Hub Routing</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r23')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 10:11</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r12')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 10:00</td>
+                        <td>Swap Multi Surya</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r34')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 09:37</td>
+                        <td>Open Position</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r27')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 09:25</td>
+                        <td>Big Lot</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r1')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 09:06</td>
+                        <td>Big Lot</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r3')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 08:34</td>
+                        <td>Open Position</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r25')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 08:33</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r8')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 08:27</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r13')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 07:51</td>
+                        <td>Free Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r19')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 07:35</td>
+                        <td>Free Margin</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r22')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 06:48</td>
+                        <td>Filtration Setting</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r16')">Delete</button></td>
+                    </tr>
+                
+                    <tr>
+                        <td>2026-06-04 06:28</td>
+                        <td>Calculate Dividend VT</td>
+                        <td><span class="badge badge-success">success</span></td>
+                        <td>-</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteRun('r5')">Delete</button></td>
+                    </tr>
+                </tbody>
                     </table>
                 </div>
                 <div id="history-empty" class="empty-state" style="display:none;">
@@ -725,12 +1545,23 @@
                         <p id="profile-title">Robotic Process Automation Specialist</p>
                     </div>
                 </div>
-                <p id="profile-summary" style="color:var(--text-muted); line-height:1.6;">
-                    Experienced RPA Developer specializing in process automation. Track record of delivering reliable automated solutions.
-                </p>
+                <p id="profile-summary" style="color:var(--text-muted); line-height:1.6;">Experienced RPA Developer building automated solutions with Automation Anywhere. Specializing in trading operations, risk monitoring, and financial process automation.</p>
             </div>
 
-            <div class="stats-grid" id="portfolio-stats"></div>
+            <div class="stats-grid" id="portfolio-stats">
+                <div class="stat-card">
+                    <div class="stat-value">11</div>
+                    <div class="stat-label">Projects Delivered</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-value">68</div>
+                    <div class="stat-label">Total Executions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">100.0%</div>
+                    <div class="stat-label">Overall Success Rate</div>
+                </div>
+            </div>
 
             <div class="card">
                 <h2>📂 Project Portfolio</h2>
@@ -745,7 +1576,95 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                <tr>
+                    <td><strong>Big Lot</strong><br><small style="color:var(--text-muted)">Automated big lot trade processing and reporting</small></td>
+                    <td>Automation Anywhere</td>
+                    <td>6</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                    <td><span class="badge badge-success">active</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>Calculate Dividend VT</strong><br><small style="color:var(--text-muted)">Calculates dividend for Valutrades accounts</small></td>
+                    <td>Automation Anywhere</td>
+                    <td>4</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                    <td><span class="badge badge-success">active</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>Filtration Setting</strong><br><small style="color:var(--text-muted)">Manages and updates filtration settings across platforms</small></td>
+                    <td>Automation Anywhere</td>
+                    <td>24</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                    <td><span class="badge badge-success">active</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>Free Margin</strong><br><small style="color:var(--text-muted)">Monitors and reports free margin levels</small></td>
+                    <td>Automation Anywhere</td>
+                    <td>10</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                    <td><span class="badge badge-success">active</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>Hub Routing</strong><br><small style="color:var(--text-muted)">Automates hub routing configuration and updates</small></td>
+                    <td>Automation Anywhere</td>
+                    <td>2</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                    <td><span class="badge badge-success">active</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>LP Swap</strong><br><small style="color:var(--text-muted)">Processes LP swap rate comparisons and reports</small></td>
+                    <td>Automation Anywhere</td>
+                    <td>2</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                    <td><span class="badge badge-success">active</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>Open Position</strong><br><small style="color:var(--text-muted)">Generates open position reports for risk monitoring</small></td>
+                    <td>Automation Anywhere</td>
+                    <td>6</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                    <td><span class="badge badge-success">active</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>Set Hangseng Max Lot</strong><br><small style="color:var(--text-muted)">Sets maximum lot size for Hangseng instruments</small></td>
+                    <td>Automation Anywhere</td>
+                    <td>4</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                    <td><span class="badge badge-success">active</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>Set Margin</strong><br><small style="color:var(--text-muted)">Configures margin settings across trading platforms</small></td>
+                    <td>Automation Anywhere</td>
+                    <td>8</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                    <td><span class="badge badge-success">active</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>Swap Multi Surya</strong><br><small style="color:var(--text-muted)">Processes multi-swap calculations for Surya accounts</small></td>
+                    <td>Automation Anywhere</td>
+                    <td>2</td>
+                    <td><span class="badge badge-success">100.0%</span></td>
+                    <td><span class="badge badge-success">active</span></td>
+                </tr>
+            
+                <tr>
+                    <td><strong>Trailing Check</strong><br><small style="color:var(--text-muted)"></small></td>
+                    <td>Automation Anywhere</td>
+                    <td>0</td>
+                    <td><span class="badge badge-danger">0%</span></td>
+                    <td><span class="badge badge-success">active</span></td>
+                </tr>
+            </tbody>
                     </table>
                 </div>
             </div>
@@ -756,7 +1675,7 @@
         </div>
 
         <!-- SETTINGS SECTION -->
-        <div id="settings" class="section">
+        <div id="settings" class="section active">
             <div class="card">
                 <h2>👤 Profile Settings</h2>
                 <form onsubmit="saveProfile(event)">
@@ -790,6 +1709,14 @@
                     <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
                 </div>
             </div>
+
+            <div class="card">
+                <h2>🌐 Publish to GitHub</h2>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">
+                    Generate a standalone HTML file with your data baked in. Upload this to GitHub Pages so anyone visiting your link sees your real portfolio stats — no localStorage needed for them.
+                </p>
+                <button class="btn btn-success" onclick="exportForPublishing()">🚀 Export for Publishing</button>
+            </div>
         </div>
     </div>
 
@@ -801,7 +1728,7 @@
                 <input type="hidden" id="project-edit-id">
                 <div class="form-group">
                     <label>Project Name</label>
-                    <input type="text" id="project-name" required placeholder="e.g. Invoice Processing Bot">
+                    <input type="text" id="project-name" required="" placeholder="e.g. Invoice Processing Bot">
                 </div>
                 <div class="form-group">
                     <label>Technology / Platform</label>
@@ -1394,6 +2321,69 @@
             URL.revokeObjectURL(url);
         }
 
+        function exportForPublishing() {
+            const data = getData();
+            // Get the current page HTML
+            const html = document.documentElement.outerHTML;
+
+            // Create a modified version that bakes in the data
+            // We replace the seedInitialData and generateRunsUpToToday to load baked data instead
+            const bakedScript = `
+        // ===== BAKED DATA (exported ${new Date().toLocaleString()}) =====
+        const BAKED_DATA = ${JSON.stringify(data)};
+
+        function seedInitialData() {
+            const existing = localStorage.getItem('rpa_dashboard');
+            if (!existing) {
+                localStorage.setItem('rpa_dashboard', JSON.stringify(BAKED_DATA));
+            }
+        }
+
+        function generateRunsUpToToday() {
+            // For published version: data is already baked in
+            // New runs won't be auto-generated for visitors
+        }
+`;
+            // Replace the seed and generate functions in the HTML
+            let publishHtml = html;
+
+            // Replace seedInitialData function
+            const seedStart = publishHtml.indexOf('
+        // ===== BAKED DATA (exported 6/5/2026, 2:11:08 PM) =====
+        const BAKED_DATA = {"projects":[{"id":"p1","name":"Big Lot","tech":"Automation Anywhere","description":"Automated big lot trade processing and reporting","startDate":"2026-06-04","status":"active"},{"id":"p2","name":"Calculate Dividend VT","tech":"Automation Anywhere","description":"Calculates dividend for Valutrades accounts","startDate":"2026-06-04","status":"active"},{"id":"p3","name":"Filtration Setting","tech":"Automation Anywhere","description":"Manages and updates filtration settings across platforms","startDate":"2026-06-04","status":"active"},{"id":"p4","name":"Free Margin","tech":"Automation Anywhere","description":"Monitors and reports free margin levels","startDate":"2026-06-04","status":"active"},{"id":"p5","name":"Hub Routing","tech":"Automation Anywhere","description":"Automates hub routing configuration and updates","startDate":"2026-06-04","status":"active"},{"id":"p6","name":"LP Swap","tech":"Automation Anywhere","description":"Processes LP swap rate comparisons and reports","startDate":"2026-06-04","status":"active"},{"id":"p7","name":"Open Position","tech":"Automation Anywhere","description":"Generates open position reports for risk monitoring","startDate":"2026-06-04","status":"active"},{"id":"p8","name":"Set Hangseng Max Lot","tech":"Automation Anywhere","description":"Sets maximum lot size for Hangseng instruments","startDate":"2026-06-04","status":"active"},{"id":"p9","name":"Set Margin","tech":"Automation Anywhere","description":"Configures margin settings across trading platforms","startDate":"2026-06-04","status":"active"},{"id":"p10","name":"Swap Multi Surya","tech":"Automation Anywhere","description":"Processes multi-swap calculations for Surya accounts","startDate":"2026-06-04","status":"active"},{"id":"1780640295799","name":"Trailing Check","tech":"Automation Anywhere","description":"","startDate":"2026-06-04","status":"active"}],"projectConfig":[{"id":"p1","runsPerDay":3,"startDate":"2026-06-04"},{"id":"p2","runsPerDay":2,"startDate":"2026-06-04"},{"id":"p3","runsPerDay":12,"startDate":"2026-06-04"},{"id":"p4","runsPerDay":5,"startDate":"2026-06-04"},{"id":"p5","runsPerDay":1,"startDate":"2026-06-04"},{"id":"p6","runsPerDay":1,"startDate":"2026-06-04"},{"id":"p7","runsPerDay":3,"startDate":"2026-06-04"},{"id":"p8","runsPerDay":2,"startDate":"2026-06-04"},{"id":"p9","runsPerDay":4,"startDate":"2026-06-04"},{"id":"p10","runsPerDay":1,"startDate":"2026-06-04"},{"id":"1780640295799","runsPerDay":6,"startDate":"2026-06-04"}],"runs":[{"id":"r1","projectId":"p1","status":"success","date":"2026-06-04","time":"09:25","notes":""},{"id":"r2","projectId":"p1","status":"success","date":"2026-06-04","time":"11:18","notes":""},{"id":"r3","projectId":"p1","status":"success","date":"2026-06-04","time":"09:06","notes":""},{"id":"r4","projectId":"p2","status":"success","date":"2026-06-04","time":"15:01","notes":""},{"id":"r5","projectId":"p2","status":"success","date":"2026-06-04","time":"06:28","notes":""},{"id":"r6","projectId":"p3","status":"success","date":"2026-06-04","time":"12:59","notes":""},{"id":"r7","projectId":"p3","status":"success","date":"2026-06-04","time":"17:12","notes":""},{"id":"r8","projectId":"p3","status":"success","date":"2026-06-04","time":"08:33","notes":""},{"id":"r9","projectId":"p3","status":"success","date":"2026-06-04","time":"12:49","notes":""},{"id":"r10","projectId":"p3","status":"success","date":"2026-06-04","time":"15:29","notes":""},{"id":"r11","projectId":"p3","status":"success","date":"2026-06-04","time":"11:20","notes":""},{"id":"r12","projectId":"p3","status":"success","date":"2026-06-04","time":"10:11","notes":""},{"id":"r13","projectId":"p3","status":"success","date":"2026-06-04","time":"08:27","notes":""},{"id":"r14","projectId":"p3","status":"success","date":"2026-06-04","time":"11:46","notes":""},{"id":"r15","projectId":"p3","status":"success","date":"2026-06-04","time":"15:01","notes":""},{"id":"r16","projectId":"p3","status":"success","date":"2026-06-04","time":"06:48","notes":""},{"id":"r17","projectId":"p3","status":"success","date":"2026-06-04","time":"15:06","notes":""},{"id":"r18","projectId":"p4","status":"success","date":"2026-06-04","time":"17:07","notes":""},{"id":"r19","projectId":"p4","status":"success","date":"2026-06-04","time":"07:51","notes":""},{"id":"r20","projectId":"p4","status":"success","date":"2026-06-04","time":"16:49","notes":""},{"id":"r21","projectId":"p4","status":"success","date":"2026-06-04","time":"15:07","notes":""},{"id":"r22","projectId":"p4","status":"success","date":"2026-06-04","time":"07:35","notes":""},{"id":"r23","projectId":"p5","status":"success","date":"2026-06-04","time":"10:33","notes":""},{"id":"r24","projectId":"p6","status":"success","date":"2026-06-04","time":"15:58","notes":""},{"id":"r25","projectId":"p7","status":"success","date":"2026-06-04","time":"08:34","notes":""},{"id":"r26","projectId":"p7","status":"success","date":"2026-06-04","time":"12:17","notes":""},{"id":"r27","projectId":"p7","status":"success","date":"2026-06-04","time":"09:37","notes":""},{"id":"r28","projectId":"p8","status":"success","date":"2026-06-04","time":"12:27","notes":""},{"id":"r29","projectId":"p8","status":"success","date":"2026-06-04","time":"11:07","notes":""},{"id":"r30","projectId":"p9","status":"success","date":"2026-06-04","time":"14:33","notes":""},{"id":"r31","projectId":"p9","status":"success","date":"2026-06-04","time":"12:37","notes":""},{"id":"r32","projectId":"p9","status":"success","date":"2026-06-04","time":"13:41","notes":""},{"id":"r33","projectId":"p9","status":"success","date":"2026-06-04","time":"14:29","notes":""},{"id":"r34","projectId":"p10","status":"success","date":"2026-06-04","time":"10:00","notes":""},{"id":"r35","projectId":"p1","status":"success","date":"2026-06-05","time":"11:18","notes":""},{"id":"r36","projectId":"p1","status":"success","date":"2026-06-05","time":"09:06","notes":""},{"id":"r37","projectId":"p1","status":"success","date":"2026-06-05","time":"07:52","notes":""},{"id":"r38","projectId":"p2","status":"success","date":"2026-06-05","time":"06:28","notes":""},{"id":"r39","projectId":"p2","status":"success","date":"2026-06-05","time":"11:06","notes":""},{"id":"r40","projectId":"p3","status":"success","date":"2026-06-05","time":"17:12","notes":""},{"id":"r41","projectId":"p3","status":"success","date":"2026-06-05","time":"08:33","notes":""},{"id":"r42","projectId":"p3","status":"success","date":"2026-06-05","time":"12:49","notes":""},{"id":"r43","projectId":"p3","status":"success","date":"2026-06-05","time":"15:29","notes":""},{"id":"r44","projectId":"p3","status":"success","date":"2026-06-05","time":"11:20","notes":""},{"id":"r45","projectId":"p3","status":"success","date":"2026-06-05","time":"10:11","notes":""},{"id":"r46","projectId":"p3","status":"success","date":"2026-06-05","time":"08:27","notes":""},{"id":"r47","projectId":"p3","status":"success","date":"2026-06-05","time":"11:46","notes":""},{"id":"r48","projectId":"p3","status":"success","date":"2026-06-05","time":"15:01","notes":""},{"id":"r49","projectId":"p3","status":"success","date":"2026-06-05","time":"06:48","notes":""},{"id":"r50","projectId":"p3","status":"success","date":"2026-06-05","time":"15:06","notes":""},{"id":"r51","projectId":"p3","status":"success","date":"2026-06-05","time":"07:12","notes":""},{"id":"r52","projectId":"p4","status":"success","date":"2026-06-05","time":"07:51","notes":""},{"id":"r53","projectId":"p4","status":"success","date":"2026-06-05","time":"16:49","notes":""},{"id":"r54","projectId":"p4","status":"success","date":"2026-06-05","time":"15:07","notes":""},{"id":"r55","projectId":"p4","status":"success","date":"2026-06-05","time":"07:35","notes":""},{"id":"r56","projectId":"p4","status":"success","date":"2026-06-05","time":"13:35","notes":""},{"id":"r57","projectId":"p5","status":"success","date":"2026-06-05","time":"12:27","notes":""},{"id":"r58","projectId":"p6","status":"success","date":"2026-06-05","time":"17:18","notes":""},{"id":"r59","projectId":"p7","status":"success","date":"2026-06-05","time":"12:17","notes":""},{"id":"r60","projectId":"p7","status":"success","date":"2026-06-05","time":"09:37","notes":""},{"id":"r61","projectId":"p7","status":"success","date":"2026-06-05","time":"13:18","notes":""},{"id":"r62","projectId":"p8","status":"success","date":"2026-06-05","time":"11:07","notes":""},{"id":"r63","projectId":"p8","status":"success","date":"2026-06-05","time":"07:04","notes":""},{"id":"r64","projectId":"p9","status":"success","date":"2026-06-05","time":"12:37","notes":""},{"id":"r65","projectId":"p9","status":"success","date":"2026-06-05","time":"13:41","notes":""},{"id":"r66","projectId":"p9","status":"success","date":"2026-06-05","time":"14:29","notes":""},{"id":"r67","projectId":"p9","status":"success","date":"2026-06-05","time":"11:23","notes":""},{"id":"r68","projectId":"p10","status":"success","date":"2026-06-05","time":"06:16","notes":""}],"profile":{"name":"RPA Developer","title":"Robotic Process Automation Specialist","summary":"Experienced RPA Developer building automated solutions with Automation Anywhere. Specializing in trading operations, risk monitoring, and financial process automation."},"lastGeneratedDate":"2026-06-05"};
+
+        function seedInitialData() {
+            const existing = localStorage.getItem('rpa_dashboard');
+            if (!existing) {
+                localStorage.setItem('rpa_dashboard', JSON.stringify(BAKED_DATA));
+            }
+        }
+
+        function generateRunsUpToToday() {
+            // For published version: data is already baked in
+            // New runs won't be auto-generated for visitors
+        }
+
+        // ===== INIT =====');
+
+            if (seedStart !== -1 && seedEnd !== -1) {
+                publishHtml = publishHtml.substring(0, seedStart) + bakedScript + '\n        ' + publishHtml.substring(seedEnd);
+            }
+
+            // Wrap as proper HTML document
+            const fullHtml = '<!DOCTYPE html>\n<html lang="en">\n' + publishHtml.substring(publishHtml.indexOf('<head>'));
+
+            const blob = new Blob([fullHtml], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html';
+            a.click();
+            URL.revokeObjectURL(url);
+
+            alert('Published HTML downloaded!\\n\\nReplace the index.html in your GitHub repo with this file, then push:\\n\\ngit add index.html\\ngit commit -m "Update portfolio data"\\ngit push');
+        }
+
         function importData(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -1600,5 +2590,6 @@
             if (e.target === this) closeProjectModal();
         });
     </script>
-</body>
-</html>
+
+
+</body></html>
