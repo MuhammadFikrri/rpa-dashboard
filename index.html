@@ -252,7 +252,6 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 0.9rem;
-            table-layout: fixed;
         }
 
         th, td {
@@ -549,8 +548,6 @@
         <button onclick="showSection('history', this)">📋 Run History</button>
         <button onclick="showSection('statistics', this)">📊 Statistics</button>
         <button onclick="showSection('schedule-view', this)">🕐 Schedule</button>
-        <button onclick="showSection('portfolio', this)">🏆 Portfolio</button>
-        <button onclick="showSection('settings', this)">⚙️ Settings</button>
     </nav>
 
     <div class="container">
@@ -689,6 +686,20 @@
                     <button class="btn btn-sm freq-tab btn-outline" onclick="setFrequencyFilter('weekly', this)">📅 Weekly</button>
                     <button class="btn btn-sm freq-tab btn-outline" onclick="setFrequencyFilter('monthly', this)">🗓️ Monthly</button>
                     <button class="btn btn-sm freq-tab btn-outline" onclick="setFrequencyFilter('adhoc', this)">⚡ Ad-hoc</button>
+                </div>
+                <div style="display:flex; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap; align-items:center;">
+                    <div style="display:flex; gap:0.5rem; align-items:center;">
+                        <span style="font-size:0.8rem; color:var(--text-muted);">Server:</span>
+                        <select id="filter-server" onchange="renderProjects()" style="padding:0.4rem 0.7rem; border:1px solid var(--border); border-radius:6px; font-size:0.8rem; background:var(--bg); color:var(--text);">
+                            <option value="">All Servers</option>
+                        </select>
+                    </div>
+                    <div style="display:flex; gap:0.5rem; align-items:center;">
+                        <span style="font-size:0.8rem; color:var(--text-muted);">Owner:</span>
+                        <select id="filter-owner" onchange="renderProjects()" style="padding:0.4rem 0.7rem; border:1px solid var(--border); border-radius:6px; font-size:0.8rem; background:var(--bg); color:var(--text);">
+                            <option value="">All Owners</option>
+                        </select>
+                    </div>
                 </div>
                 <div id="project-list"></div>
             </div>
@@ -1435,6 +1446,9 @@
                             <option value="weekly">Weekly Only</option>
                             <option value="monthly">Monthly Only</option>
                         </select>
+                        <select id="schedule-server-filter" onchange="renderScheduleView()" style="padding:0.5rem 0.8rem; border:1px solid var(--border); border-radius:8px; font-size:0.85rem; background:var(--bg); color:var(--text);">
+                            <option value="">All Servers</option>
+                        </select>
                     </div>
                 </div>
                 <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">Visual timeline showing when each project runs. Overlapping bars sit side by side.</p>
@@ -1663,6 +1677,18 @@
                     <label>Technology / Platform</label>
                     <input type="text" id="project-tech" placeholder="e.g. Automation Anywhere, UiPath, Python">
                 </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Server / VM</label>
+                        <input type="text" id="project-server" list="server-list" placeholder="e.g. VM-1, VM-2">
+                        <datalist id="server-list"></datalist>
+                    </div>
+                    <div class="form-group">
+                        <label>Owner</label>
+                        <input type="text" id="project-owner" list="owner-list" placeholder="e.g. Fikri, John">
+                        <datalist id="owner-list"></datalist>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label>Description</label>
                     <textarea id="project-desc" rows="3" placeholder="What does this bot do?"></textarea>
@@ -1727,7 +1753,7 @@
 
     <script>
     (function(){
-        var BAKED_VERSION = "1781085822";
+        var BAKED_VERSION = "1781089904";
         var currentVersion = localStorage.getItem('rpa_dashboard_version');
         if (currentVersion !== BAKED_VERSION) {
             try {
@@ -1830,6 +1856,8 @@
                     document.getElementById('project-edit-id').value = editId;
                     document.getElementById('project-name').value = project.name;
                     document.getElementById('project-tech').value = project.tech || '';
+                    document.getElementById('project-server').value = project.server || '';
+                    document.getElementById('project-owner').value = project.owner || '';
                     document.getElementById('project-desc').value = project.description || '';
                     document.getElementById('project-start').value = project.startDate || '';
                     document.getElementById('project-status').value = project.status || 'active';
@@ -1886,6 +1914,8 @@
                 id: editId || Date.now().toString(),
                 name: document.getElementById('project-name').value,
                 tech: document.getElementById('project-tech').value,
+                server: document.getElementById('project-server').value,
+                owner: document.getElementById('project-owner').value,
                 description: document.getElementById('project-desc').value,
                 startDate: startDate,
                 status: document.getElementById('project-status').value,
@@ -1951,6 +1981,18 @@
                 projects = projects.filter(p => (p.frequency || 'daily') === currentFrequencyFilter);
             }
 
+            // Filter by server
+            const serverFilter = document.getElementById('filter-server') ? document.getElementById('filter-server').value : '';
+            if (serverFilter) {
+                projects = projects.filter(p => (p.server || '') === serverFilter);
+            }
+
+            // Filter by owner
+            const ownerFilter = document.getElementById('filter-owner') ? document.getElementById('filter-owner').value : '';
+            if (ownerFilter) {
+                projects = projects.filter(p => (p.owner || '') === ownerFilter);
+            }
+
             // Sort
             if (sortBy === 'alpha') {
                 projects.sort((a, b) => a.name.localeCompare(b.name));
@@ -1972,7 +2014,7 @@
             const freqColors = { daily: '#00d4ff', weekly: '#7c4dff', monthly: '#ffab40', adhoc: '#7b8fa8' };
             const freqLabels = { daily: 'Daily', weekly: 'Weekly', monthly: 'Monthly', adhoc: 'Ad-hoc' };
 
-            container.innerHTML = '<div class="table-wrap"><table><thead><tr><th>Project Name</th><th>Technology</th><th>Frequency</th><th>Status</th><th>Today Runs</th><th>Success</th><th>Failed</th><th>Schedules</th><th>Actions</th></tr></thead><tbody>' +
+            container.innerHTML = '<div class="table-wrap"><table><thead><tr><th>Project Name</th><th>Technology</th><th>Server / Owner</th><th>Frequency</th><th>Status</th><th>Today Runs</th><th>Success</th><th>Failed</th><th>Schedules</th><th>Actions</th></tr></thead><tbody>' +
                 projects.map(p => {
                     const todayRuns = data.runs.filter(r => r.projectId === p.id && r.date === todayStr);
                     const successCount = todayRuns.filter(r => r.status === 'success').length;
@@ -1993,7 +2035,7 @@
                         const runDays = p.runDays || (p.runDay ? [p.runDay] : [1]);
                         const runDaysStr = runDays.map(d => dayNames[d]).join(', ');
                         scheduleRows += `<tr class="schedule-detail-row" data-project="${p.id}" style="display:none; background:var(--bg);">
-                            <td style="padding-left:2.5rem; font-size:0.85rem; color:var(--accent);" colspan="9">📅 Runs on: <strong>${runDaysStr}</strong></td>
+                            <td style="padding-left:2.5rem; font-size:0.85rem; color:var(--accent);" colspan="10">📅 Runs on: <strong>${runDaysStr}</strong></td>
                         </tr>`;
                     }
 
@@ -2040,6 +2082,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                             </tr>`;
                         }).join('');
                     }
@@ -2047,6 +2090,7 @@
                     return `<tr class="project-row" style="cursor:pointer;" onclick="toggleScheduleDetail('${p.id}')">
                         <td><strong>${p.name}</strong><br><small style="color:var(--text-muted)">${p.description || ''}</small></td>
                         <td>${p.tech || '-'}</td>
+                        <td><span style="font-size:0.8rem; color:var(--accent);">${p.server || '-'}</span><br><span style="font-size:0.75rem; color:var(--text-muted);">${p.owner || '-'}</span></td>
                         <td><span class="badge" style="background:${freqColor}22;color:${freqColor};">${freqLabel}</span></td>
                         <td><span class="badge badge-${p.status === 'active' ? 'success' : p.status === 'completed' ? 'primary' : 'danger'}">${p.status}</span></td>
                         <td>${todayRuns.length}</td>
@@ -2385,10 +2429,12 @@
 
             // Collect slots that run on the selected day
             let slots = [];
+            const schedServerFilter = document.getElementById('schedule-server-filter') ? document.getElementById('schedule-server-filter').value : '';
             data.projects.forEach(p => {
                 const freq = p.frequency || 'daily';
                 if (freqFilter !== 'all' && freq !== freqFilter) return;
                 if (freq === 'adhoc') return;
+                if (schedServerFilter && (p.server || '') !== schedServerFilter) return;
 
                 // Check if this project runs on the selected day
                 if (freq === 'weekly') {
@@ -2415,6 +2461,7 @@
                     slots.push({
                         project: p.name,
                         projectId: p.id,
+                        server: p.server || '',
                         freq: freq,
                         time: s.time,
                         startMin: startMin,
@@ -3220,6 +3267,30 @@
                 });
                 adhocSel.value = currentVal;
             }
+
+            // Populate server and owner filters + datalists
+            const servers = [...new Set(data.projects.map(p => p.server).filter(Boolean))];
+            const owners = [...new Set(data.projects.map(p => p.owner).filter(Boolean))];
+
+            const serverFilter = document.getElementById('filter-server');
+            if (serverFilter) {
+                const curVal = serverFilter.value;
+                serverFilter.innerHTML = '<option value="">All Servers</option>' + servers.map(s => `<option value="${s}">${s}</option>`).join('');
+                serverFilter.value = curVal;
+            }
+
+            const ownerFilterEl = document.getElementById('filter-owner');
+            if (ownerFilterEl) {
+                const curVal = ownerFilterEl.value;
+                ownerFilterEl.innerHTML = '<option value="">All Owners</option>' + owners.map(o => `<option value="${o}">${o}</option>`).join('');
+                ownerFilterEl.value = curVal;
+            }
+
+            // Datalists for add/edit form
+            const serverList = document.getElementById('server-list');
+            if (serverList) serverList.innerHTML = servers.map(s => `<option value="${s}">`).join('');
+            const ownerList = document.getElementById('owner-list');
+            if (ownerList) ownerList.innerHTML = owners.map(o => `<option value="${o}">`).join('');
         }
 
         function setDefaultDateTime() {
@@ -3250,6 +3321,15 @@
                 if (sec === currentScheduleSection) { b.className = 'btn btn-sm sched-time-btn'; b.style = 'background:var(--accent);color:#fff;'; }
                 else { b.className = 'btn btn-sm sched-time-btn btn-outline'; b.style = ''; }
             });
+            // Populate schedule server filter
+            const schedServerEl = document.getElementById('schedule-server-filter');
+            if (schedServerEl) {
+                const data = getData();
+                const servers = [...new Set(data.projects.map(p => p.server).filter(Boolean))];
+                const curVal = schedServerEl.value;
+                schedServerEl.innerHTML = '<option value="">All Servers</option>' + servers.map(s => '<option value="' + s + '">' + s + '</option>').join('');
+                schedServerEl.value = curVal;
+            }
             renderScheduleView();
             renderStatistics();
             renderPortfolio();
