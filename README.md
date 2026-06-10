@@ -43,7 +43,7 @@
 - Color-coded project bars with time, name, and duration
 
 ### 🏆 Portfolio
-- Professional portfolio view for interviews
+- Professional portfolio format
 - Print/PDF export ready
 - Profile settings (name, title, bio)
 
