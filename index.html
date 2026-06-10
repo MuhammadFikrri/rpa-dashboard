@@ -1727,7 +1727,7 @@
 
     <script>
     (function(){
-        var BAKED_VERSION = "1781084219";
+        var BAKED_VERSION = "1781085540";
         var currentVersion = localStorage.getItem('rpa_dashboard_version');
         if (currentVersion !== BAKED_VERSION) {
             try {
@@ -2353,8 +2353,9 @@
         }
 
         // ===== SCHEDULE VIEW =====
-        let currentScheduleSection = '0';
-        let currentScheduleDay = 1; // Monday default
+        // Default to current day and time frame
+        let currentScheduleSection = String(Math.floor(new Date().getHours() / 4) * 4);
+        let currentScheduleDay = new Date().getDay() || 1; // Default to Monday if Sunday
 
         function switchScheduleDay(day, btn) {
             currentScheduleDay = day;
@@ -3238,6 +3239,17 @@
             renderOverview();
             renderProjects();
             renderHistory();
+            // Update schedule button highlights
+            document.querySelectorAll('.sched-day-btn').forEach(b => {
+                const day = parseInt(b.getAttribute('onclick').match(/switchScheduleDay\((\d)/)[1]);
+                if (day === currentScheduleDay) { b.className = 'btn btn-sm sched-day-btn'; b.style = 'background:var(--primary);color:#fff;'; }
+                else { b.className = 'btn btn-sm sched-day-btn btn-outline'; b.style = ''; }
+            });
+            document.querySelectorAll('.sched-time-btn').forEach(b => {
+                const sec = b.getAttribute('onclick').match(/switchScheduleSection\('(\d+)'/)[1];
+                if (sec === currentScheduleSection) { b.className = 'btn btn-sm sched-time-btn'; b.style = 'background:var(--accent);color:#fff;'; }
+                else { b.className = 'btn btn-sm sched-time-btn btn-outline'; b.style = ''; }
+            });
             renderScheduleView();
             renderStatistics();
             renderPortfolio();
